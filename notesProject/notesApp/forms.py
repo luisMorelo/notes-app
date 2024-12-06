@@ -4,7 +4,7 @@ from django.contrib.auth.forms import (
 )
 from django.contrib.auth.models import User
 from django.forms import ModelForm
-from .models import Task
+from .models import Notes
 
 #Forms de registro/crear cuenta
 class SingUpForm(UserCreationForm):
@@ -43,7 +43,10 @@ class LoginForms(AuthenticationForm):
 class NotesForm(ModelForm):
     
     class Meta:
-        model = Task
-        fields = ['titulo', 'descripcion', 'fecha_creacion']
+        model = Notes
+        fields = ['titulo', 'contenido']
+
+        # Alternativamente, se exclude:
+        # exclude = ['fecha_creacion']
 
 
