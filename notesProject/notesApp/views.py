@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from .models import Notes
 from .serializers import notesSerializers
 from rest_framework import generics, permissions
-from .forms import SingUpForm, LoginForms
+from .forms import SingUpForm, LoginForms, NotesForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 #--------- Vistas vasadas en clase para el modelo notas ------
 
 #Para listar notas
@@ -40,7 +41,7 @@ class NotesDelete(generics.DestroyAPIView):
 
 
 
-#registrarse
+#Función para registrarse
 def user_signup(request):
 
     form = SingUpForm()
@@ -65,7 +66,7 @@ def user_signup(request):
 
 
 
-#Iniciar sesión
+#Función para iniciar sesión
 def user_login(request):
     if request.method == 'GET':
         form = LoginForms()
@@ -84,3 +85,28 @@ def user_login(request):
         else:
             return render(request, 'login.html', {"form": form, "error": "Por favor, corrija los errores del formulario"})
     
+
+#Lista de tareas y dashboart
+@login_required
+def dashboard(request):
+    notes = Notes.objects.filter(user=request.user)
+    return render(request, 'index.html', { 'notes': notes })
+
+
+#Crear una nueva tarea
+@login_required
+def crear_nota(request):
+
+    form = NotesForm()
+
+    if request.method == "GET":
+        return render(request, 'crear-nota.html', {"form": form})
+    else:
+        try:
+            form = NotesForm(request.POST)
+            new_note = form.save(commit=False)
+            new_note.user = request.user
+            new_note.save()
+            return redirect('dashboard')
+        except ValueError:
+            return render(request, 'crear-nota.html', {"form": form, "error": "Error al crear nota."})
