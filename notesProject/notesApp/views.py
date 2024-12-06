@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Notes
 from .serializers import notesSerializers
-from rest_framework import generics
+from rest_framework import generics, permissions
 
 #--------- Vistas vasadas en clase para el modelo notas ------
 
@@ -9,23 +9,28 @@ from rest_framework import generics
 class NotesList(generics.ListAPIView):
     queryset = Notes.objects.all()
     serializer_class = notesSerializers 
-
+    permission_classes = [permissions.IsAuthenticated]  # Requiere autenticación
+    
 #para crear notas
 class NotesCreate(generics.CreateAPIView):
     queryset = Notes.objects.all()
     serializer_class = notesSerializers
+    permission_classes = [permissions.IsAuthenticated]  # Requiere autenticación
 
 #ver un objeto unico pot ID
 class TaskDetail(generics.RetrieveAPIView):
     queryset = Notes.objects.all()
     serializer_class = notesSerializers
+    permission_classes = [permissions.IsAuthenticated]  # Requiere autenticación
 
 #Actualizar notas
 class TaskUpdate(generics.UpdateAPIView):
     queryset = Notes.objects.all()
     serializer_class = notesSerializers
+    permission_classes = [permissions.IsAuthenticated]  # Requiere autenticación
 
 #Borar un registro 
 class TaskDelete(generics.DestroyAPIView):
     queryset = Notes.objects.all()
     serializer_class = notesSerializers
+    permission_classes = [permissions.IsAuthenticated]  # Requiere autenticación
