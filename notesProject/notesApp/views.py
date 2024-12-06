@@ -15,7 +15,7 @@ class NotesCreate(generics.CreateAPIView):
     queryset = Notes.objects.all()
     serializer_class = notesSerializers
 
-#ver un pbjeto unico pot ID
+#ver un objeto unico pot ID
 class TaskDetail(generics.RetrieveAPIView):
     queryset = Notes.objects.all()
     serializer_class = notesSerializers
