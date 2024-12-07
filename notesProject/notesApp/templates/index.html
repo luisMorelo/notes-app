@@ -15,7 +15,7 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand ps-3" href="{% url 'dashboard' %}">Gestor Tareas</a>
+            <a class="navbar-brand ps-3" href="{% url 'dashboard' %}">Notes App</a>
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
@@ -46,14 +46,14 @@
                                 Dashboard
                             </a>
                             <div class="sb-sidenav-menu-heading">Interface</div>
-                            <a class="nav-link collapsed" href="{% url 'crear-tarea' %}" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link collapsed" href="{% url 'crear-nota' %}" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Crear nueva tarea
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{% url 'crear-tarea' %}">Crear tarea</a>
+                                    <a class="nav-link" href="{% url 'crear-nota' %}">Crear tarea</a>
                                 </nav>
                             </div>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
@@ -86,7 +86,7 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Dashboard - Mis tareas</h1>
+                        <h1 class="mt-4">Dashboard - Mis notas</h1>
                         <div class="row">
                             <div class="col-xl-6"></div>
                         </div>
@@ -111,10 +111,9 @@
                                         <tr>
                                             <th scope="row">{{ note.titulo }}</th>
                                             <td>{{ note.contenido }}</td>
-                                            
                                             <td>
-                                                <a href="{% url 'editar-tarea' task.id %}"> <button class="btn btn-info" style="background-color: rgb(145, 233, 255);">Editar</button> </a>
-                                                <a href="{% url 'eliminar-tarea' task.id %}"> <button class="btn btn-info" style="background-color: rgb(244, 255, 145);">Eliminar</button> </a>
+                                                <a href="{% url 'editar-nota' note.id %}"> <button class="btn btn-info" style="background-color: rgb(145, 233, 255);">Editar</button> </a>
+                                                <a href="#"> <button class="btn btn-info" style="background-color: rgb(244, 255, 145);">Eliminar</button> </a>
                                             </td>
                                         </tr>
                                         {% endfor %}

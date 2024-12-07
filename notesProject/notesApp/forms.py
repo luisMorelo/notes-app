@@ -40,7 +40,7 @@ class LoginForms(AuthenticationForm):
     )
 
 
-class NotesForm(ModelForm):
+class NotesForm(forms.ModelForm):
     
     class Meta:
         model = Notes

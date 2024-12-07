@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Notes
 from .serializers import notesSerializers
 from rest_framework import generics, permissions
@@ -86,7 +86,7 @@ def user_login(request):
             return render(request, 'login.html', {"form": form, "error": "Por favor, corrija los errores del formulario"})
     
 
-#Lista de tareas y dashboart
+#Lista de notas y dashboart
 @login_required
 def dashboard(request):
     notes = Notes.objects.filter(user=request.user)
@@ -107,6 +107,26 @@ def crear_nota(request):
             new_note = form.save(commit=False)
             new_note.user = request.user
             new_note.save()
+            print('Nota creada con éxito')
             return redirect('dashboard')
         except ValueError:
+            print("Formulario inválido", form.errors)  # Imprime los errores del formulario
             return render(request, 'crear-nota.html', {"form": form, "error": "Error al crear nota."})
+
+
+#Editar tarea
+@login_required
+def editar_nota(request, nota_id):
+    nota = get_object_or_404(Notes, id=nota_id, user=request.user)
+    
+    if request.method == "GET":
+        form = NotesForm(instance=nota)
+        return render(request, 'editar-notas.html', {"form": form, "nota": nota})
+    else:
+        try:
+            form = NotesForm(request.POST, instance=nota)
+            form.save()
+            return redirect('dashboard')
+        except ValueError:
+            return render(request, 'editar-notas.html', {"form": form, "nota": nota, "error": "Error al editar la nota."})
+

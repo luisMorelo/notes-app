@@ -16,5 +16,6 @@ urlpatterns = [
     path('registro', views.user_signup, name='registro-usuario'), #Registrarse
     path('', views.user_login, name='iniciar-sesion'), #Iniciar sesión
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('create-notes/', views.crear_nota , name='crear-tarea'),
+    path('create-notes/', views.crear_nota , name='crear-nota'),
+    path('editar/<int:nota_id>/', views.editar_nota , name='editar-nota'),
 ]
