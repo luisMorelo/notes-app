@@ -41,27 +41,19 @@ class NotesDelete(generics.DestroyAPIView):
 
 
 
-#Función para registrarse
+# Función para registrarse
 def user_signup(request):
-
-    form = SingUpForm()
     if request.method == 'GET':
-        return render(request,'register.html', {
-            'form': form
-        })
-    else:
-        if request.method == 'POST':
-
-            if request.POST['password1'] == request.POST['password2']:
-                user = User.objects.create_user(
-                    username=request.POST['username'], password=request.POST['password1']
-                )
-                user.save()
-                login(request, user)
-                
-                return render(request, 'register.html', {'form': form, 'exito': '¡El usuario fue creado exitósamente!'})
-            else:
-                return render(request, 'register.html', {'form': form, 'error': 'Las contraseñas no coinciden, verifica e intentalo de nuevo'})
+        form = SingUpForm()
+        return render(request, 'register.html', {'form': form})
+    elif request.method == 'POST':
+        form = SingUpForm(request.POST)
+        if form.is_valid():  # Verifica que los datos sean válidos
+            user = form.save()  # Crea el usuario con los datos del formulario
+            login(request, user)  # Inicia sesión automáticamente al usuario
+            return render(request, 'register.html', {'form': form, 'exito': '¡El usuario fue creado exitosamente!'})
+        else:
+            return render(request, 'register.html', {'form': form, 'error': 'Datos inválidos, verifica e inténtalo de nuevo'})
 
 
 
@@ -146,4 +138,4 @@ def eliminar_nota(request, nota_id):
 @login_required
 def cerrar_sesion(request):
     logout(request)
-    return redirect('mi_vista_principal')
+    return redirect('iniciar-sesion')
