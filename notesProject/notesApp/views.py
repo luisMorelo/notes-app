@@ -3,7 +3,7 @@ from .models import Notes
 from .serializers import notesSerializers
 from rest_framework import generics, permissions
 from .forms import SingUpForm, LoginForms, NotesForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 #--------- Vistas vasadas en clase para el modelo notas ------
@@ -114,7 +114,7 @@ def crear_nota(request):
             return render(request, 'crear-nota.html', {"form": form, "error": "Error al crear nota."})
 
 
-#Editar tarea
+#Editar nota
 @login_required
 def editar_nota(request, nota_id):
     nota = get_object_or_404(Notes, id=nota_id, user=request.user)
@@ -130,3 +130,20 @@ def editar_nota(request, nota_id):
         except ValueError:
             return render(request, 'editar-notas.html', {"form": form, "nota": nota, "error": "Error al editar la nota."})
 
+
+
+#Eliminar tarea
+def eliminar_nota(request, nota_id):
+    nota = get_object_or_404(Notes, id=nota_id)
+    if request.method == "POST":
+        nota.delete()
+        return redirect('dashboard')  # redirige a la lista de tareas después de eliminar
+
+    return render(request, 'eliminar-nota.html', {'nota': nota})
+
+
+#cerrar sesion
+@login_required
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('mi_vista_principal')

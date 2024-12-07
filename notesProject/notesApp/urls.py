@@ -18,4 +18,6 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('create-notes/', views.crear_nota , name='crear-nota'),
     path('editar/<int:nota_id>/', views.editar_nota , name='editar-nota'),
+    path('eliminar-nota/<int:nota_id>/', views.eliminar_nota , name='eliminar-nota'),
+    path('cerrar_sesion/', views.cerrar_sesion, name='cerrar-sesion'),
 ]
