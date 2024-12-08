@@ -124,6 +124,7 @@ def editar_nota(request, nota_id):
 
 
 #Eliminar tarea
+@login_required
 def eliminar_nota(request, nota_id):
     nota = get_object_or_404(Notes, id=nota_id)
     if request.method == "POST":
