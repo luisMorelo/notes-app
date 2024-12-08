@@ -53,8 +53,7 @@ def user_signup(request):
             login(request, user)  # Inicia sesión automáticamente al usuario
             return render(request, 'register.html', {'form': form, 'exito': '¡El usuario fue creado exitosamente!'})
         else:
-            return render(request, 'register.html', {'form': form, 'error': 'Datos inválidos, verifica e inténtalo de nuevo'})
-
+            return render(request, 'register.html', {'form': form, 'error': form.errors }) #¡Datos inválidos! Cree una contraseña segura que tenga mínimo 8 caracteres, incluyendo letras, números y símbolos
 
 
 

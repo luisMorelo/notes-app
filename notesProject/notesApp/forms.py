@@ -13,13 +13,12 @@ class SingUpForm(UserCreationForm):
 
     class Meta:
         model = User #el modelo que voy a usar
-        fields = ['username','first_name', 'last_name', 'email'] #los campos del modelo que voy a usar
+        fields = ['username','first_name', 'last_name'] #los campos del modelo que voy a usar
 
         #aqui se definen las etiquetas para cada uno de los campos 
         labels= {
             "first_name": "nombre",
-            "last_name": "apellido",
-            "email": "correo"
+            "last_name": "apellido"
         }
 
         #Aqui se establece los widgets o tipo de etiquetas que van a tener los campos en el formulario
@@ -27,7 +26,6 @@ class SingUpForm(UserCreationForm):
             "username": forms.TextInput(attrs={"class": "form-control"}),
             "first_name": forms.TextInput(attrs={"class": "form-control"}),
             "last_name": forms.TextInput(attrs={"class":"form-control"}),
-            "email": forms.EmailInput(attrs={"class":"form-control"})
         }
 
 #Forms de Acceso/inicio de secion 
