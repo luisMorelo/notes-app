@@ -6,7 +6,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 urlpatterns = [
 
     #ENDPOINTS DE AUTENTICACIÓN
-    path('/api/auth/login', obtain_auth_token, name='api_token_auth'), #Autenticar a un usuario y devolver un JWT.
+    path('api/auth/login', obtain_auth_token, name='api_token_auth'), #Autenticar a un usuario y devolver un JWT.
     
     #ENDPOINTS DE NOTAS
     path('get/api/notes', views.NotesList.as_view()), #Recuperar todas las notas para el usuario autenticado.
@@ -20,4 +20,7 @@ urlpatterns = [
     path('editar/<int:nota_id>/', views.editar_nota , name='editar-nota'),
     path('eliminar-nota/<int:nota_id>/', views.eliminar_nota , name='eliminar-nota'),
     path('cerrar_sesion/', views.cerrar_sesion, name='cerrar-sesion'),
+
+    #ENDPOINT DE PRUEBA DE BLOQUEO OPTIMISTA DE CONCURRENCIA
+    path('update-note/', views.update_note_view, name='update_note'),
 ]

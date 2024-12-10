@@ -6,6 +6,20 @@ from .forms import SingUpForm, LoginForms, NotesForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ValidationError
+from .services import update_note
+
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import ValidationError
+from django.http import JsonResponse
+import json
+from .services import update_note
 #--------- Vistas vasadas en clase para el modelo notas ------
 
 #Para listar notas
@@ -139,3 +153,25 @@ def eliminar_nota(request, nota_id):
 def cerrar_sesion(request):
     logout(request)
     return redirect('iniciar-sesion')
+
+
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])  # Autenticación basada en tokens
+@permission_classes([IsAuthenticated])  # Permite solo usuarios autenticados
+def update_note_view(request):
+    data = json.loads(request.body)
+    note_id = data.get('note_id')
+    titulo = data.get('titulo')
+    contenido = data.get('contenido')
+    updated_at = data.get('updated_at')
+
+    user = request.user  # Obtiene al usuario autenticado
+
+    try:
+        update_note(note_id, user, titulo, contenido, updated_at)
+        return JsonResponse({'message': 'Nota actualizada correctamente.'}, status=200)
+    except ValidationError as e:
+        return JsonResponse({'error': str(e)}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': f'Error inesperado, así es: {str(e)}'}, status=500)
