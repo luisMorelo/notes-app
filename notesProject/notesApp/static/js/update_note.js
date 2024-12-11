@@ -2,7 +2,7 @@ document.getElementById("saveNoteButton").addEventListener("click", function () 
     const noteId = document.getElementById("noteId").value;
     const titulo = document.getElementById("titulo").value;
     const contenido = document.getElementById("contenido").value;
-    const terminada = document.getElementById("terminada").checked; // Adaptado para el checkbox
+    
 
     fetch("update-note/", {
         method: "POST",
@@ -14,7 +14,6 @@ document.getElementById("saveNoteButton").addEventListener("click", function () 
             note_id: noteId,
             titulo: titulo,
             contenido: contenido,
-            terminada: terminada,
         }),
     })
         .then((response) => response.json())
