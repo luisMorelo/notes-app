@@ -111,7 +111,7 @@ def crear_nota(request):
             return render(request, 'crear-nota.html', {"form": form, "error": "Error al crear nota."})
 
 
-
+#Editar una nota 
 @login_required
 def editar_nota(request, nota_id):
     nota = get_object_or_404(Notes, id=nota_id, user=request.user)
@@ -129,7 +129,7 @@ def editar_nota(request, nota_id):
 
 
 
-#Eliminar tarea
+#Eliminar nota
 @login_required
 def eliminar_nota(request, nota_id):
     nota = get_object_or_404(Notes, id=nota_id)
