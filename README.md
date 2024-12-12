@@ -1,7 +1,8 @@
-Instrucciones sobre cómo configurar y ejecutar el proyecto localmente
 
 
-## Instalación
+## Instrucciones sobre cómo configurar y ejecutar el proyecto localmente
+
+Instalación
 Requisitos previos:
 Asegúrate de tener instalado Python 3.8 o superior y Git.
 
@@ -41,3 +42,30 @@ Asegúrate de tener instalado Python 3.8 o superior y Git.
 5. Ejecuta el servidor de desarrollo
 
     python manage.py runserver
+
+6. (opcional) Crear un usuario admin para gestioanr el modelo notas Django Admin
+    
+    python manage.py createsuperuser
+
+    Este comando te pedirá que ingreses:
+
+    Username: El nombre de usuario para tu administrador.
+    Email address: Una dirección de correo electrónico válida.
+    Password: Una contraseña segura.
+
+    y listo, ya podrás acceder desde el localhost http://127.0.0.1:8000/admin con tus credenciales 
+
+
+## Tecnologías utilizadas y razones para elegirlas.
+
+- Backend
+    Django:
+        Razones:
+        Framework web robusto y maduro para Python, ideal para desarrollar aplicaciones rápidamente.
+        Ofrece un ORM potente (Object-Relational Mapper) que simplifica la interacción con la base de datos.
+        Cuenta con una gran comunidad y una amplia gama de aplicaciones y librerías de terceros.
+        Su enfoque "batteries included" proporciona muchas funcionalidades listas para usar, como el sistema de autenticación, el sistema de administración y el sistema de URL.
+
+-Bootstrap:
+    Razones:
+        Como todava no he trabajo con Reac y typescript´me pareció una muy buna opcion para lo que se estaba pidiendo en la pueba técnica, es un Framework de front-end popular y ampliamente utilizado para construir interfaces de usuario responsivas y además proporciona una gran cantidad de componentes prediseñados (Como botones, formularios, tablas, etc.) que aceleran el desarrollo.
