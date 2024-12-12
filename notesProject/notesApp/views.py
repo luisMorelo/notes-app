@@ -84,11 +84,13 @@ def user_login(request):
             return render(request, 'login.html', {"form": form, "error": "Credenciales incorrectas, por favor corrija los errores del formulario."})
     
 
+
 #Lista de notas y dashboart
 @login_required
 def dashboard(request):
     notes = Notes.objects.filter(user=request.user)
     return render(request, 'index.html', { 'notes': notes })
+
 
 
 #Crear una nueva tarea
@@ -112,23 +114,6 @@ def crear_nota(request):
             return render(request, 'crear-nota.html', {"form": form, "error": "Error al crear nota."})
 
 
-#Editar una nota 
-'''
-@login_required
-def editar_nota(request, nota_id):
-    nota = get_object_or_404(Notes, id=nota_id, user=request.user)
-    
-    if request.method == "GET":
-        form = NotesForm(instance=nota)
-        return render(request, 'editar-notas.html', {"form": form, "nota": nota})
-    else:
-        try:
-            form = NotesForm(request.POST, instance=nota)
-            form.save()
-            return redirect('dashboard')  #solo si se hace un POST tradicional
-        except ValueError:
-            return render(request, 'editar-notas.html', {"form": form, "nota": nota, "error": "Error al editar la nota."})
-'''
 
 # Editar una nota
 @login_required
@@ -161,6 +146,7 @@ def editar_nota(request, nota_id):
             return render(request, 'editar-notas.html', {"form": form, "nota": nota, "error": "Error al editar la nota."})
 
 
+
 #Eliminar nota
 @login_required
 def eliminar_nota(request, nota_id):
@@ -170,6 +156,7 @@ def eliminar_nota(request, nota_id):
         return redirect('dashboard')  # redirige a la lista de tareas después de eliminar
 
     return render(request, 'eliminar-nota.html', {'nota': nota})
+
 
 
 #cerrar sesion
