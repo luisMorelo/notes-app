@@ -2,6 +2,9 @@ Instrucciones sobre cómo configurar y ejecutar el proyecto localmente
 
 
 ## Instalación
+Requisitos previos:
+Asegúrate de tener instalado Python 3.8 o superior y Git.
+
 1. Clona el repositorio así: 
 
     git clone https://github.com/luisMorelo/notes-app.git
@@ -18,26 +21,23 @@ Instrucciones sobre cómo configurar y ejecutar el proyecto localmente
 
 3. Instalar dependencias así: pip install -r requirements.txt
 
-4. Realiza migraciones a la base de datos:
+
+4. Base de Datos (PostgreSQL):
+    Crear una base de datos con el nombre 'notes' desde PgAdmin.
+
+    Variables de Entorno
+        Configura la siguiente variable de entorno en el archivo `.env.example`
+
+        DB_PASSWORD=   #Escriba la contraseña del usuario 'postgres' para conectarse al servidor - "PostgreSQL"
+
+
+5. Realiza migraciones a la base de datos:
 
     python manage.py makemigrations 
 
     python manage.py migrate
 
+
 5. Ejecuta el servidor de desarrollo
 
     python manage.py runserver
-    
-
-
-### instrucciones sobre cómo configurar la conexión a la base de datos.Base de Datos (PostgreSQL):
-
-- Crear la base de datos y el usuario necesarios.
-
-- Crear la base de datos y el usuario necesarios.
-
-- Variables de Entorno
-    Configura la siguiente variable de entorno en tu archivo `.env.example` o en tu entorno de ejecución:
-
-    DB_PASSWORD=   #Escribe allí la contraseña de tu base de datos postgret
-
