@@ -11,7 +11,6 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
-from .services import update_note
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import TokenAuthentication
@@ -19,7 +18,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
 from django.http import JsonResponse
 import json
-from .services import update_note
+
 #--------- Vistas vasadas en clase para el modelo notas ------
 
 #Para listar notas
@@ -67,7 +66,7 @@ def user_signup(request):
             login(request, user)  # Inicia sesión automáticamente al usuario
             return render(request, 'register.html', {'form': form, 'exito': '¡El usuario fue creado exitosamente!'})
         else:
-            return render(request, 'register.html', {'form': form, 'error': form.errors }) #¡Datos inválidos! Cree una contraseña segura que tenga mínimo 8 caracteres, incluyendo letras, números y símbolos
+            return render(request, 'register.html', {'form': form, 'error': 'Por favor revise sus datos, La contraseña debe tener al menos 8 caracteres entre mayúsculas y minúsculas, números y símbolos.' }) #¡Datos inválidos! Cree una contraseña segura que tenga mínimo 8 caracteres, incluyendo letras, números y símbolos
 
 
 
@@ -119,7 +118,7 @@ def crear_nota(request):
             return render(request, 'crear-nota.html', {"form": form, "error": "Error al crear nota."})
 
 
-#Editar nota
+
 @login_required
 def editar_nota(request, nota_id):
     nota = get_object_or_404(Notes, id=nota_id, user=request.user)
@@ -131,7 +130,7 @@ def editar_nota(request, nota_id):
         try:
             form = NotesForm(request.POST, instance=nota)
             form.save()
-            return redirect('dashboard')
+            return redirect('dashboard')  #solo si se hace un POST tradicional
         except ValueError:
             return render(request, 'editar-notas.html', {"form": form, "nota": nota, "error": "Error al editar la nota."})
 
@@ -155,23 +154,3 @@ def cerrar_sesion(request):
     return redirect('iniciar-sesion')
 
 
-
-@api_view(['POST'])
-@authentication_classes([TokenAuthentication])  # Autenticación basada en tokens
-@permission_classes([IsAuthenticated])  # Permite solo usuarios autenticados
-def update_note_view(request):
-    data = json.loads(request.body)
-    note_id = data.get('note_id')
-    titulo = data.get('titulo')
-    contenido = data.get('contenido')
-    updated_at = data.get('updated_at')
-
-    user = request.user  # Obtiene al usuario autenticado
-
-    try:
-        update_note(note_id, user, titulo, contenido, updated_at)
-        return JsonResponse({'message': 'Nota actualizada correctamente.'}, status=200)
-    except ValidationError as e:
-        return JsonResponse({'error': str(e)}, status=400)
-    except Exception as e:
-        return JsonResponse({'error': f'Error inesperado, así es: {str(e)}'}, status=500)

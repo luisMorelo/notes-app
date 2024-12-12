@@ -22,5 +22,5 @@ urlpatterns = [
     path('cerrar_sesion/', views.cerrar_sesion, name='cerrar-sesion'),
 
     #ENDPOINT DE PRUEBA DE BLOQUEO OPTIMISTA DE CONCURRENCIA
-    path('update-note/', views.update_note_view, name='update_note'),
+   
 ]

@@ -73,19 +73,14 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Funciones:</h6>
-                        <a class="collapse-item" href="login.html">Crear notas</a>
+                        <a class="collapse-item" href=" {% url 'crear-nota'%} ">Crear notas</a>
                         <a class="collapse-item" href=" {% url 'dashboard' %} ">Listar todas las notas</a>
                         
                     </div>
                 </div>
             </li>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li>
+            
 
             <!-- Nav Item - Tables -->
             
@@ -118,18 +113,7 @@
                     </form>
 
                     <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -160,12 +144,7 @@
 
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
+                            
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
@@ -211,12 +190,7 @@
 
                         <!-- Nav Item - Messages -->
                         <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
-                            </a>
+                           
                             <!-- Dropdown - Messages -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="messagesDropdown">
@@ -288,22 +262,10 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
+                                
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
+                                    Cerrar sesión
                                 </a>
                             </div>
                         </li>
@@ -323,7 +285,7 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Crea una nota...</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Editar</h6>
                         </div>
 
                         <div class="card-body">
@@ -331,29 +293,29 @@
                             <!-- Aqui va la tabla de crear Nota -->
 
                             
-                                <form action="" method="POST">
+                                <form id="updateNoteForm" method="POST">
                                     {% csrf_token %}
                                     
                                     <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label"> <strong>Título</strong> </label>
-                                        <input type="text" name="titulo" class="form-control" id="exampleFormControlInput1" placeholder="Mi nota" value="{{ nota.titulo }}">
+                                        <label for="titulo" class="form-label"><strong>Título</strong></label>
+                                        <input type="text" name="titulo" class="form-control" id="titulo" placeholder="Mi nota" value="{{ nota.titulo }}">
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="exampleFormControlTextarea1" class="form-label"> <strong>Descripción de la tarea</strong> </label>
-                                        <textarea class="form-control" name="contenido" id="exampleFormControlTextarea1" rows="3" >{{ nota.contenido }}</textarea>
-                                    </div>  
-                                    
-                                    <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label"> <strong>Terminada</strong> </label>
-                                        <input type="checkbox" name="fecha_creacion" id="exampleFormControlInput1" placeholder="name@example.com" >
-                                    </div> 
+                                        <label for="contenido" class="form-label"><strong>Contenido de la nota</strong></label>
+                                        <textarea class="form-control" name="contenido" id="contenido" rows="3">{{ nota.contenido }}</textarea>
+                                    </div>
 
-                                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                                    <input type="hidden" name="noteId" id="noteId" value="{{ nota.id }}">
+                                    <input type="hidden" name="updatedAt" id="updatedAt" value="{{ nota.updated_at|date:'c' }}">
+                                    <input type="hidden" name="version" id="version" value="{{ nota.version }}">
+
+
+                                    <button type="submit" id="saveNoteButton" class="btn btn-primary">Actualizar</button>  <!-- Cambiado de type="submit" a type="button" -->
                                 </form>
 
+                                <p id="errorMessage" style="display:none; color: red;"></p> 
 
-                            
                         </div>
                     </div>
 
@@ -404,6 +366,9 @@
         </div>
     </div>
 
+      <!--JavaScript de la función del bloqueo optimista-->
+    <script src="{% static 'js/update_note.js' %}?v=1.0"></script>
+
     <!-- Bootstrap core JavaScript-->
     <script src=" {% static 'vendor/jquery/jquery.min.js' %} "></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %} "></script>
@@ -420,6 +385,7 @@
 
     <!-- Page level custom scripts -->
     <script src="{% static 'js/demo/datatables-demo.js'%} "></script>
+
 
 </body>
 
