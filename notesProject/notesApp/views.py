@@ -5,7 +5,8 @@ from rest_framework import generics, permissions
 from .forms import SingUpForm, LoginForms, NotesForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-
+from django.contrib import messages
+from django.utils.timezone import now
 #--------- Vistas vasadas en clase para el modelo notas ------
 
 #Para listar notas
@@ -80,7 +81,7 @@ def user_login(request):
             else:
                 return render(request, 'login.html', {"form": form, "error": "El usuario o la contraseña son incorrectos"})
         else:
-            return render(request, 'login.html', {"form": form, "error": "Por favor, corrija los errores del formulario"})
+            return render(request, 'login.html', {"form": form, "error": "Credenciales incorrectas, por favor corrija los errores del formulario."})
     
 
 #Lista de notas y dashboart
@@ -112,6 +113,7 @@ def crear_nota(request):
 
 
 #Editar una nota 
+'''
 @login_required
 def editar_nota(request, nota_id):
     nota = get_object_or_404(Notes, id=nota_id, user=request.user)
@@ -126,7 +128,38 @@ def editar_nota(request, nota_id):
             return redirect('dashboard')  #solo si se hace un POST tradicional
         except ValueError:
             return render(request, 'editar-notas.html', {"form": form, "nota": nota, "error": "Error al editar la nota."})
+'''
 
+# Editar una nota
+@login_required
+def editar_nota(request, nota_id):
+    nota = get_object_or_404(Notes, id=nota_id, user=request.user)
+
+    if request.method == "GET":
+        form = NotesForm(instance=nota)
+        return render(request, 'editar-notas.html', {"form": form, "nota": nota})
+
+    else:
+        try:
+            # Validar si la nota fue modificada por otro usuario o en otra pestaña
+            form = NotesForm(request.POST, instance=nota)
+
+            # Verificar el campo de versión
+            version_form = int(request.POST.get('version'))
+            if version_form != nota.version:
+                messages.error(request, "La nota fue modificada en otra parte. Por favor, actualiza la página y vuelve a intentarlo.")
+                return render(request, 'editar-notas.html', {"form": form, "nota": nota})
+
+            # Actualizar la versión y la nota
+            if form.is_valid():
+                nota.version += 1  # Incrementar la versión
+                nota.updated_at = now()  # Actualizar la fecha de modificación
+                form.save()
+                #messages.success(request, "Nota actualizada exitosamente.")
+                return redirect('dashboard')  # Volver al dashboard
+
+        except ValueError:
+            return render(request, 'editar-notas.html', {"form": form, "nota": nota, "error": "Error al editar la nota."})
 
 
 #Eliminar nota
