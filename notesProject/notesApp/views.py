@@ -147,7 +147,7 @@ def editar_nota(request, nota_id):
             # Verificar el campo de versión
             version_form = int(request.POST.get('version'))
             if version_form != nota.version:
-                messages.error(request, "La nota fue modificada en otra parte. Por favor, actualiza la página y vuelve a intentarlo.")
+                messages.error(request, "La nota fue modificada en otra pestaña. Por favor, actualiza la página y vuelve a intentarlo.")
                 return render(request, 'editar-notas.html', {"form": form, "nota": nota})
 
             # Actualizar la versión y la nota
@@ -155,7 +155,6 @@ def editar_nota(request, nota_id):
                 nota.version += 1  # Incrementar la versión
                 nota.updated_at = now()  # Actualizar la fecha de modificación
                 form.save()
-                #messages.success(request, "Nota actualizada exitosamente.")
                 return redirect('dashboard')  # Volver al dashboard
 
         except ValueError:

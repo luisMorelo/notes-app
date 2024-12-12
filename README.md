@@ -69,3 +69,48 @@ Asegúrate de tener instalado Python 3.8 o superior y Git.
 -Bootstrap:
     Razones:
         Como todava no he trabajo con Reac y typescript´me pareció una muy buna opcion para lo que se estaba pidiendo en la pueba técnica, es un Framework de front-end popular y ampliamente utilizado para construir interfaces de usuario responsivas y además proporciona una gran cantidad de componentes prediseñados (Como botones, formularios, tablas, etc.) que aceleran el desarrollo.
+
+
+## Explicación detallada de la estrategia de bloqueo implementada.
+
+- Estrategia de Bloqueo Optimista:
+    
+    El bloqueo optimista es una técnica que sirve para manejar concurrencia en aplicaciones donde múltiples usuarios o procesos pueden intentar modificar la misma información al mismo tiempo.
+
+    El bloqueo optimista permite que múltiples usuarios trabajen simultáneamente, pero verifica que los datos no hayan cambiado antes de guardar los cambios.
+
+    En este caso, se implementó el bloqueo optimista para evitar conflictos al editar notas desde diferentes pestañas. Esto asegura la integridad de los datos y evita sobrescribir cambios realizados en otra pestaña.
+
+   
+    1. Campo de versión (version):
+    Cada registro en la base de datos tiene un campo version que se incrementa cada vez que el registro es modificado. Este campo se utiliza para detectar si el dato ha cambiado entre la lectura y el intento de escritura.
+
+    2. Fecha de última modificación (updated_at):
+    Aunque el campo updated_at no es esencial para el bloqueo optimista, se utiliza en el formulario para dar una referencia temporal y permitir validaciones adicionales en el cliente (JavaScript).
+
+    Flujo de Trabajo
+
+        Lectura del registro:
+        Cuando el usuario accede a la página de edición, los datos actuales de la nota se cargan en el formulario, incluyendo el valor de version.
+
+        Modificación concurrente:
+        Otro usuario o proceso puede modificar la misma nota y guardar los cambios, incrementando el valor de version en la base de datos.
+
+        Intento de guardado:
+        Cuando el primer usuario intenta guardar los cambios:
+
+        Se envía el valor de version almacenado en el formulario al servidor.
+        El servidor compara el valor enviado con el valor actual en la base de datos.
+        
+        Validación del bloqueo:
+
+        Éxito: Si el valor de version coincide, los cambios se guardan, y el campo version se incrementa en +1.
+        Conflicto: Si los valores no coinciden, se rechaza la operación y se informa al usuario que la nota ha sido modificada en otra parte.
+
+
+## Desafío enfrentado
+-Primero entender claramente los conceptos de concurrencia para tener claridad sobre las condiciones de carrera, sobre las técnicas de bloqueo existentes y los casos donde estas se podían aplicar
+
+-Implementar la técnica de bloqueo optimista: 
+    Una vez tuve claro los conceptos, el reto fue tratar de implementar esta técnica mediante solicitudes AJAX con JavaScript que no me estaban funcionando, entonces luego cambié y adapté la vista de editar_nota que ya tenía en Python para que además de editar también hiciera esas validaciones y pudiera darle solución a lo que se estaba pidiendo. 
+    Esta parte del proyecto fue la que me tomó mas tiempo, por lo que tuve que intentar de varias maneras como implementar la técnica con el front, pero al final lo logré y la satisfacción ¡fue única!
