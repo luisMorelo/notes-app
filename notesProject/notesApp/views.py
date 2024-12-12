@@ -1,23 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Notes
-from .serializers import notesSerializers
+from .models import Notes, User
+from .serializers import notesSerializers, UserSerializer
 from rest_framework import generics, permissions
 from .forms import SingUpForm, LoginForms, NotesForm
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-
-import json
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.core.exceptions import ValidationError
-
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import ValidationError
-from django.http import JsonResponse
-import json
 
 #--------- Vistas vasadas en clase para el modelo notas ------
 
@@ -50,6 +37,12 @@ class NotesDelete(generics.DestroyAPIView):
     queryset = Notes.objects.all()
     serializer_class = notesSerializers
     permission_classes = [permissions.IsAuthenticated]  # Requiere autenticación
+
+# Vista para registrar un usuario
+class UserCreate(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]  # Permitir acceso sin autenticación
 
 
 
